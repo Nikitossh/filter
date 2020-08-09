@@ -13,7 +13,7 @@ func main() {
 	sink(channel3)
 }
 
-func handleCommandLine() {
+func handleCommandLine() (int, int, []string, []string) {
 	suffixes := make([]string, 5)
 	files := make([]string, 5)
 	return 1, 5, suffixes, files
@@ -51,6 +51,22 @@ func filterSuffixes(suffixes []string, in <-chan string) <-chan string {
 	return out
 }
 
-func sinc(chan string) {
+func filterSize(maxSize int, minSize int, in <-chan string) <-chan string {
+	out := make(chan string, cap(in))
+	go func() {
+		for filename := range in {
+			if fileSize(filename) > maxSize && fileSize(filename) < minSize {
+				continue
+			}
+		}
+	}()
+	return out
+}
+
+func fileSize(filename string) int {
+	return 1
+}
+
+func sink(<-chan string) {
 
 }
