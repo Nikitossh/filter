@@ -1,7 +1,9 @@
-package main
+package filter
 
 import (
+	"fmt"
 	"path/filepath"
+	"strings"
 )
 
 func main() {
@@ -38,7 +40,7 @@ func filterSuffixes(suffixes []string, in <-chan string) <-chan string {
 				out <- filename
 				continue
 			}
-			ext := strings.toLower(filepath.Ext(filename))
+			ext := strings.ToLower(filepath.Ext(filename))
 			for _, suffix := range suffixes {
 				if ext == suffix {
 					out <- filename
@@ -67,6 +69,8 @@ func fileSize(filename string) int {
 	return 1
 }
 
-func sink(<-chan string) {
-
+func sink(ch <-chan string) {
+	for each := range ch {
+		fmt.Printf("%s", each)
+	}
 }
